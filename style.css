@@ -203,3 +203,102 @@ footer .legal{color:#829296;font-size:.82rem;font-family:"Archivo";line-height:1
   header,footer,.btn{display:none}
   body{background:#fff}
 }
+#pricing .plans {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  position: relative;
+  z-index: 0;
+}
+
+#pricing .plan {
+  position: relative;
+  border: 1px solid #d8d9d3;
+  background: #fff;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#pricing .plan.pick {
+  border: 2px solid #0D4F5C;
+}
+
+#pricing .plan .flag {
+  position: absolute;
+  top: -0.85rem;
+  left: 1.75rem;
+  background: #0D4F5C;
+  color: #F5F6F2;
+  font-family: Archivo, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+}
+
+#pricing .plan h3 {
+  font-family: Archivo, sans-serif;
+  margin: 0 0 0.4rem;
+}
+
+#pricing .plan .who {
+  margin: 0 0 1.2rem;
+  opacity: 0.75;
+  font-size: 0.95rem;
+}
+
+#pricing .plan .price {
+  font-family: Archivo, sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+#pricing .plan .price em {
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: normal;
+  opacity: 0.7;
+}
+
+#pricing .plan .was {
+  font-size: 0.85rem;
+  opacity: 0.65;
+  margin: 0.5rem 0 1.4rem;
+}
+
+#pricing .plan ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.8rem;
+  flex: 1;
+}
+
+#pricing .plan ul li {
+  padding-left: 1.4rem;
+  margin-bottom: 0.55rem;
+  font-size: 0.95rem;
+  position: relative;
+}
+
+#pricing .plan ul li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #0D4F5C;
+}
+
+/* Los dos botones de pago, del mismo ancho */
+#pricing [id^="paypal-button-container"],
+#pricing stripe-buy-button {
+  display: block;
+  width: 100%;
+  margin-top: auto;
+}
+
+@media (max-width: 720px) {
+  #pricing .plans { grid-template-columns: 1fr; }
+}
