@@ -4,8 +4,8 @@
 <!-- SDK para suscripciones -->
 <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&vault=true&intent=subscription&currency=EUR"></script>
 
-<!-- SDK para pagos únicos (createOrder / capture) -->
-<script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&currency=EUR"></script>
+<!-- SDK para pagos únicos (createOrder / capture) --
+<script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&currency=EUR"></script> -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CandleGrid Pro — Candlestick Pattern Expert Advisor for MetaTrader 5</title>
@@ -228,19 +228,26 @@
           <li>Email support</li>
           <li>Cancels in one click, no questions</li>
         </ul>
-<div id="paypal-subscription"></div>
-
+<div id="paypal-button-container-P-9FX7453496128393BNKTDB7Q"></div>
+<script src="https://www.paypal.com/sdk/js?client-id=AWa_6Af93UGQdocFcdOmDgC6xGjFV4Kp-8yeFyZ6DhHqPDnHt6kK5xQdSenwitI1-a0kk4Sc4DeCYK9N&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 <script>
-paypal.Buttons({
-    createSubscription: function(data, actions) {
+  paypal.Buttons({
+      style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'subscribe'
+      },
+      createSubscription: function(data, actions) {
         return actions.subscription.create({
-            plan_id: 'TU_PLAN_ID'
+          /* Creates the subscription */
+          plan_id: 'P-9FX7453496128393BNKTDB7Q'
         });
-    },
-    onApprove: function(data, actions) {
-        alert('Suscripción activada: ' + data.subscriptionID);
-    }
-}).render('#paypal-subscription');
+      },
+      onApprove: function(data, actions) {
+        alert(data.subscriptionID); // You can add optional success message for the subscriber here
+      }
+  }).render('#paypal-button-container-P-9FX7453496128393BNKTDB7Q'); // Renders the PayPal button
 </script>
 
 
