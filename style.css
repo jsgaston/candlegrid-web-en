@@ -46,15 +46,8 @@ a:hover{color:var(--petrol-lift)}
 .skip:focus{left:.5rem;top:.5rem}
 
 /* ── masthead ─────────────────────────────────────── */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #F5F6F2;   /* opaco: si es transparente se sigue viendo el contenido detrás */
-}
-
-/* Atrapa a PayPal en su propio contexto de apilamiento */
-.plans,
+header { position: sticky; top: 0; z-index: 1000; background: #F5F6F2; }
+.plans { position: relative; z-index: 0; },
 .plan,
 [id^="paypal-button-container"] {
   position: relative;
