@@ -223,8 +223,29 @@
           <li>Email support</li>
           <li>Cancels in one click, no questions</li>
         </ul>
-        <a class="btn ghost block" href="PASTE_STRIPE_SUBSCRIPTION">Subscribe</a>
-        <p class="pay">Card payment via Stripe</p>
+        <div id="paypal-button-container-P-9FX7453496128393BNKTDB7Q"></div>
+<script src="https://www.paypal.com/sdk/js?client-id=AWa_6Af93UGQdocFcdOmDgC6xGjFV4Kp-8yeFyZ6DhHqPDnHt6kK5xQdSenwitI1-a0kk4Sc4DeCYK9N&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script>
+  paypal.Buttons({
+      style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'subscribe'
+      },
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          /* Creates the subscription */
+          plan_id: 'P-9FX7453496128393BNKTDB7Q'
+        });
+      },
+      onApprove: function(data, actions) {
+        alert(data.subscriptionID); // You can add optional success message for the subscriber here
+      }
+  }).render('#paypal-button-container-P-9FX7453496128393BNKTDB7Q'); // Renders the PayPal button
+</script>
+       <!-- <a class="btn ghost block" href="PASTE_STRIPE_SUBSCRIPTION">Subscribe</a>
+        <p class="pay">Card payment via Stripe</p> -->
       </div>
 
       <div class="plan pick">
