@@ -223,29 +223,21 @@
           <li>Email support</li>
           <li>Cancels in one click, no questions</li>
         </ul>
-        <div id="paypal-button-container-P-9FX7453496128393BNKTDB7Q"></div>
-<script src="https://www.paypal.com/sdk/js?client-id=AWa_6Af93UGQdocFcdOmDgC6xGjFV4Kp-8yeFyZ6DhHqPDnHt6kK5xQdSenwitI1-a0kk4Sc4DeCYK9N&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+<div id="paypal-subscription"></div>
+
 <script>
-  paypal.Buttons({
-      style: {
-          shape: 'rect',
-          color: 'gold',
-          layout: 'vertical',
-          label: 'subscribe'
-      },
-      createSubscription: function(data, actions) {
+paypal.Buttons({
+    createSubscription: function(data, actions) {
         return actions.subscription.create({
-          /* Creates the subscription */
-          plan_id: 'P-9FX7453496128393BNKTDB7Q'
+            plan_id: 'P-TU_PLAN_ID'
         });
-      },
-      onApprove: function(data, actions) {
-        alert(data.subscriptionID); // You can add optional success message for the subscriber here
-      }
-  }).render('#paypal-button-container-P-9FX7453496128393BNKTDB7Q'); // Renders the PayPal button
+    },
+    onApprove: function(data, actions) {
+        alert('Suscripción activada: ' + data.subscriptionID);
+    }
+}).render('#paypal-subscription');
 </script>
-       <!-- <a class="btn ghost block" href="PASTE_STRIPE_SUBSCRIPTION">Subscribe</a>
-        <p class="pay">Card payment via Stripe</p> -->
+
       </div>
 
       <div class="plan pick">
@@ -261,8 +253,25 @@
           <li>Free account-number changes, forever</li>
           <li>Direct line to the developer</li>
         </ul>
-        <!--<a class="btn block" href="PASTE_STRIPE_LICENCE">Buy with card</a>
-        <p class="pay"><a href="PASTE_PAYPAL" rel="noopener">or pay with PayPal</a></p>-->
+        <div id="paypal-onetime"></div>
+
+<script>
+paypal.Buttons({
+    createOrder: function(data, actions) {
+        return actions.order.create({
+            purchase_units: [{
+                amount: { value: '149.00' }
+            }]
+        });
+    },
+    onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+            alert('Pago completado por ' + details.payer.name.given_name);
+        });
+    }
+}).render('#paypal-onetime');
+</script>
+
 
 
     </div>
