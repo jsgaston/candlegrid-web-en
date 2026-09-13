@@ -260,24 +260,7 @@ paypal.Buttons({
           <li>Free account-number changes, forever</li>
           <li>Direct line to the developer</li>
         </ul>
-<div id="paypal-onetime"></div>
 
-<script>
-paypal.Buttons({
-    createOrder: function(data, actions) {
-        return actions.order.create({
-            purchase_units: [{
-                amount: { value: '149.00' }
-            }]
-        });
-    },
-    onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-            alert('Pago completado por ' + details.payer.name.given_name);
-        });
-    }
-}).render('#paypal-onetime');
-</script>
 
 
 
