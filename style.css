@@ -46,18 +46,18 @@ a:hover{color:var(--petrol-lift)}
 .skip:focus{left:.5rem;top:.5rem}
 
 /* ── masthead ─────────────────────────────────────── */
-header { position: sticky; top: 0; z-index: 1000; background: #F5F6F2; }
-.plans { position: relative; z-index: 0; },
+header{position:sticky;top:0;z-index:1000;background:var(--paper);border-bottom:1px solid var(--rule)}
+/* Los iframes de PayPal/Stripe traen z-index altisimos: los encerramos en su
+   propio contexto de apilamiento para que no se suban por encima del header. */
+.plans,
 .plan,
-[id^="paypal-button-container"] {
-  position: relative;
-  z-index: 0;
-}
+[id^="paypal-button-container"],
+stripe-buy-button{position:relative;z-index:0}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:1.25rem;
      padding:.8rem 1.75rem;max-width:var(--max);margin:0 auto}
-.mark{display:flex;align-items:baseline;gap:.45rem;font-weight:700;letter-spacing:-.025em;
+.wordmark{display:flex;align-items:baseline;gap:.45rem;font-weight:700;letter-spacing:-.025em;
       font-size:1.05rem;text-decoration:none;color:var(--ink)}
-.mark span{color:var(--petrol);font-weight:500}
+.wordmark span{color:var(--petrol);font-weight:500}
 nav{display:flex;gap:1.5rem;font-size:.875rem}
 nav a{color:var(--ink-soft);text-decoration:none}
 nav a:hover{color:var(--petrol)}
@@ -105,10 +105,6 @@ nav a:hover{color:var(--petrol)}
 .btn.small{padding:.5rem 1.05rem;font-size:.875rem}
 .btn.block{display:block;width:100%;text-align:center}
 .btn-row{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center}
-paypal.Buttons({
-    fundingSource: paypal.FUNDING.PAYPAL,
-    style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
-    ...
 /* ── labelled blocks ──────────────────────────────── */
 .feat > div{display:grid;grid-template-columns:16rem 1fr;gap:2.25rem;
             padding:1.6rem 0;border-top:1px solid var(--rule-soft)}
@@ -147,6 +143,13 @@ td.v{font-family:"IBM Plex Mono";font-variant-numeric:tabular-nums;text-align:ri
 .plan li:last-child{border-bottom:none}
 .plan li::before{content:"";position:absolute;left:0;top:1.08em;width:.6rem;height:1px;background:var(--petrol)}
 .pay{font-size:.85rem;color:var(--ink-mute);margin:.85rem 0 0;font-family:"Archivo";text-align:center}
+
+/* Hueco de pago: empuja el boton al fondo de la tarjeta para que los dos
+   planes queden alineados aunque tengan distinto numero de ventajas. */
+.pay-slot{margin-top:auto;min-height:3.1rem}
+.pay-slot > div,
+.pay-slot stripe-buy-button{display:block;width:100%}
+
 
 /* ── steps ────────────────────────────────────────── */
 ol.steps{counter-reset:s;list-style:none;padding:0;margin:0;max-width:64ch}
@@ -202,103 +205,4 @@ footer .legal{color:#829296;font-size:.82rem;font-family:"Archivo";line-height:1
 @media print{
   header,footer,.btn{display:none}
   body{background:#fff}
-}
-#pricing .plans {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  align-items: start;
-  position: relative;
-  z-index: 0;
-}
-
-#pricing .plan {
-  position: relative;
-  border: 1px solid #d8d9d3;
-  background: #fff;
-  padding: 2rem 1.75rem;
-  display: flex;
-  flex-direction: column;
-}
-
-#pricing .plan.pick {
-  border: 2px solid #0D4F5C;
-}
-
-#pricing .plan .flag {
-  position: absolute;
-  top: -0.85rem;
-  left: 1.75rem;
-  background: #0D4F5C;
-  color: #F5F6F2;
-  font-family: Archivo, sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 0.3rem 0.7rem;
-}
-
-#pricing .plan h3 {
-  font-family: Archivo, sans-serif;
-  margin: 0 0 0.4rem;
-}
-
-#pricing .plan .who {
-  margin: 0 0 1.2rem;
-  opacity: 0.75;
-  font-size: 0.95rem;
-}
-
-#pricing .plan .price {
-  font-family: Archivo, sans-serif;
-  font-size: 2.4rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-#pricing .plan .price em {
-  font-size: 1rem;
-  font-weight: 400;
-  font-style: normal;
-  opacity: 0.7;
-}
-
-#pricing .plan .was {
-  font-size: 0.85rem;
-  opacity: 0.65;
-  margin: 0.5rem 0 1.4rem;
-}
-
-#pricing .plan ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.8rem;
-  flex: 1;
-}
-
-#pricing .plan ul li {
-  padding-left: 1.4rem;
-  margin-bottom: 0.55rem;
-  font-size: 0.95rem;
-  position: relative;
-}
-
-#pricing .plan ul li::before {
-  content: "→";
-  position: absolute;
-  left: 0;
-  color: #0D4F5C;
-}
-
-/* Los dos botones de pago, del mismo ancho */
-#pricing [id^="paypal-button-container"],
-#pricing stripe-buy-button {
-  display: block;
-  width: 100%;
-  margin-top: auto;
-}
-
-@media (max-width: 720px) {
-  #pricing .plans { grid-template-columns: 1fr; }
 }
