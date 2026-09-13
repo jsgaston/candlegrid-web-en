@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CandleGrid Pro — Candlestick Pattern Expert Advisor for MetaTrader 5</title>
+<meta name="description" content="An MT5 Expert Advisor that trades 14 candlestick patterns across seven timeframes in parallel. Hard stop loss on every entry, no grid, no martingale. Free to test in demo and in the Strategy Tester.">
+<link rel="canonical" href="https://bots.wisfli.com/">
+
+<meta property="og:type" content="product">
+<meta property="og:title" content="CandleGrid Pro — Expert Advisor for MetaTrader 5">
+<meta property="og:description" content="Fourteen candlestick patterns, seven timeframes, one robot. Every entry carries a hard stop. Test it free in demo before you buy.">
+<meta property="og:url" content="https://bots.wisfli.com/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230D4F5C'/><rect x='9' y='7' width='4' height='18' fill='%23F5F6F2'/><rect x='19' y='11' width='4' height='14' fill='%23F5F6F2'/></svg>">
+
+<!--
+  ═══════════════════════════════════════════════════════════════════════
+   BEFORE YOU PUBLISH — search for "PASTE_" and replace. Full notes in README.
+  ═══════════════════════════════════════════════════════════════════════
+   1. PASTE_STRIPE_SUBSCRIPTION   Stripe Payment Link, monthly
+   2. PASTE_STRIPE_LICENCE        Stripe Payment Link, one-off
+   3. PASTE_PAYPAL                PayPal hosted button link
+   4. you@yourdomain.com          your support address (3 files)
+   5. Footer: legal name + tax ID — required when selling from Spain
+   6. informe/ → report/ReportTester-XAUUSD.html is already in place
+
+   IN STRIPE: add a REQUIRED custom field called "MT5 account number" to
+   every Payment Link, and set the post-payment redirect to
+   https://bots.wisfli.com/activate.html
+  ═══════════════════════════════════════════════════════════════════════
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header>
+  <div class="bar">
+    <a class="mark" href="index.html">CandleGrid <span>Pro</span></a>
+    <nav>
+      <a href="#what">What it is</a>
+      <a href="#test">Test results</a>
+      <a href="#spec">Specification</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#licence">Licence</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn small" href="#pricing">Buy</a>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Expert Advisor for MetaTrader 5 · MQL5 · XAUUSD</p>
+    <h1>Fourteen candlestick patterns, seven timeframes, one robot</h1>
+    <p class="lede">
+      CandleGrid Pro runs M30, H1, H2, H4, H8, H12 and D1 in parallel, each timeframe
+      as an independent system with its own magic number and its own position management.
+      Every entry carries a hard stop. Nothing is averaged down, nothing is doubled up.
+    </p>
+    <div class="btn-row">
+      <a class="btn" href="#pricing">See pricing</a>
+      <a class="btn ghost" href="#test">Read the test results</a>
+    </div>
+  </div>
+
+  <svg class="curve" viewBox="0 0 1000 230" preserveAspectRatio="none" role="img"
+       aria-label="Shape of the backtest equity curve on XAUUSD between January 2025 and August 2026">
+    <path class="fill" id="curveFill"></path>
+    <path class="line" id="curveLine"></path>
+  </svg>
+
+  <div class="wrap">
+    <div class="stats">
+      <div><b>392</b><small>Trades over 19 months</small></div>
+      <div><b>1.29</b><small>Profit factor</small></div>
+      <div><b>14.07%</b><small>Maximum equity drawdown</small></div>
+      <div><b>100%</b><small>Real tick data in the test</small></div>
+    </div>
+    <p class="caption">
+      Shape of the backtest equity curve on XAUUSD, January 2025 to August 2026, at 1% risk per trade.
+      The exact test conditions — and what they leave out — are set out in full below.
+    </p>
+  </div>
+</section>
+
+<section id="what">
+  <div class="wrap">
+    <h2>What it is</h2>
+    <p class="section-intro">
+      An Expert Advisor that looks for fourteen Japanese candlestick patterns — engulfing, harami,
+      morning and evening star, piercing line, dark cloud cover, three soldiers, three crows,
+      tasuki gaps, hammer, shooting star — across seven timeframes at once. Each timeframe keeps its
+      own magic number, its own filters and its own position management, so what M30 does never
+      interferes with what D1 does.
+    </p>
+
+    <div class="feat">
+      <div>
+        <h3>The grid is timeframes, not orders</h3>
+        <p>No averaging down, no lot multiplication, no second position opened to rescue the first. When a trade goes wrong it loses what it was sized to lose and the robot moves on. If you are looking for a martingale that prints a perfect curve until it empties the account, this is not it.</p>
+      </div>
+      <div>
+        <h3>Risk decides the lot, not the other way round</h3>
+        <p>You set a percentage of equity; the EA derives the lot from the distance to the stop. If the symbol's minimum lot would force more risk than you authorised, it declines the trade instead of rounding up. Stop loss and take profit sit on the broker's server from the first tick, so a dead VPS does not leave a position unprotected.</p>
+      </div>
+      <div>
+        <h3>Explicit circuit breakers</h3>
+        <p>Automatic shutdown when the daily loss limit is reached, a cap on simultaneous positions across all seven timeframes, a spread filter that refuses to enter when your broker widens, and a forced Friday close at the hour you choose.</p>
+      </div>
+      <div>
+        <h3>Every filter can be switched off</h3>
+        <p>Trading hours and weekdays, an EMA trend filter (with, against, or off), plus optional ADX, CCI, stochastic and Bollinger filters. All independent. A filter you cannot disable is a filter you cannot evaluate.</p>
+      </div>
+      <div>
+        <h3>You can see what it is doing</h3>
+        <p>An on-chart panel shows the state of each timeframe, and a periodic journal report logs open positions, the day's result and the reason a signal was skipped. No black box that only ever says "waiting for signal".</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="test">
+  <div class="wrap">
+    <h2>Test results, with their conditions and their limits</h2>
+    <p class="section-intro">
+      Strategy Tester run on XAUUSD, 1 January 2025 to 2 August 2026, using 100% real tick data —
+      192.5 million ticks — at 1% risk per trade with a maximum of three simultaneous positions.
+    </p>
+
+    <div class="two-col">
+      <table>
+        <caption>Performance</caption>
+        <tbody>
+          <tr><td>Trades</td><td class="v">392</td></tr>
+          <tr><td>Winning trades</td><td class="v">48.21%</td></tr>
+          <tr><td>Average win / average loss</td><td class="v">1.38</td></tr>
+          <tr><td>Profit factor</td><td class="v">1.29</td></tr>
+          <tr><td>Recovery factor</td><td class="v">2.96</td></tr>
+        </tbody>
+      </table>
+
+      <table>
+        <caption>Risk</caption>
+        <tbody>
+          <tr><td>Maximum balance drawdown</td><td class="v">13.05%</td></tr>
+          <tr><td>Maximum equity drawdown</td><td class="v">14.07%</td></tr>
+          <tr><td>Longest losing streak</td><td class="v">9 trades</td></tr>
+          <tr><td>Average time in position</td><td class="v">25 h</td></tr>
+          <tr><td>History quality</td><td class="v">100% real ticks</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="note">
+      <strong>What this test does not tell you.</strong> It was run in the tester's pip-based
+      calculation mode, which does not deduct commission or swap. With an average holding time of
+      25 hours on gold, overnight swap is not a rounding error, so the real-money result is lower
+      than the curve suggests. The period tested is also a strong bull run in gold: nothing here
+      proves the system survives eighteen months of range. And the time filters in this
+      configuration came out of an optimiser, which always finds the hours that worked best in the
+      past. That is why you will not find a headline return figure anywhere on this page, and why
+      the robot can be tested in full before you pay anything. An out-of-sample run on 2018–2024
+      with these parameters frozen is in progress and will be published either way.
+    </p>
+
+    <p style="margin-top:1.8rem">
+      <a href="report/ReportTester-XAUUSD.html">Download the full Strategy Tester report</a>
+      — the original MetaTrader file, with every input and every trade, uncut.
+    </p>
+  </div>
+</section>
+
+<section id="spec">
+  <div class="wrap">
+    <h2>Specification</h2>
+    <table>
+      <tbody>
+        <tr><td>Platform</td><td class="v">MetaTrader 5, build 4000 or later</td></tr>
+        <tr><td>Delivered as</td><td class="v">Compiled .ex5 + .set presets</td></tr>
+        <tr><td>Timeframes traded</td><td class="v">M30, H1, H2, H4, H8, H12, D1</td></tr>
+        <tr><td>Chart it attaches to</td><td class="v">Any — it reads all seven internally</td></tr>
+        <tr><td>Tuned for</td><td class="v">XAUUSD</td></tr>
+        <tr><td>Account types</td><td class="v">Hedging and netting</td></tr>
+        <tr><td>Suggested minimum deposit</td><td class="v">€1,000 standard / €100 cent</td></tr>
+        <tr><td>VPS</td><td class="v">Recommended, not supplied</td></tr>
+        <tr><td>Licensing</td><td class="v">Signed against your MT5 account number</td></tr>
+        <tr><td>Demo &amp; Strategy Tester</td><td class="v">No licence key required</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <h2>Pricing</h2>
+    <p class="section-intro">
+      Launch pricing while the out-of-sample validation is still running. It rises as the track
+      record grows, and early buyers keep what they paid.
+    </p>
+
+    <div class="plans">
+
+      <div class="plan">
+        <h3>Monthly subscription</h3>
+        <p class="who">For taking it live without committing up front.</p>
+        <div class="price">€29 <em>/ month</em></div>
+        <p class="was">VAT included · cancel any time</p>
+        <ul>
+          <li>One live account, unlimited demo accounts</li>
+          <li>Updates and .set presets included</li>
+          <li>Email support</li>
+          <li>Cancels in one click, no questions</li>
+        </ul>
+        <a class="btn ghost block" href="PASTE_STRIPE_SUBSCRIPTION">Subscribe</a>
+        <p class="pay">Card payment via Stripe</p>
+      </div>
+
+      <div class="plan pick">
+        <span class="flag">First 10 licences</span>
+        <h3>Lifetime licence</h3>
+        <p class="who">For traders who have tested it and want to keep it.</p>
+        <div class="price">€149</div>
+        <p class="was">VAT included · regular price €199</p>
+        <ul>
+          <li>Two live accounts, unlimited demo accounts</li>
+          <li>Lifetime updates</li>
+          <li>XAUUSD .set presets to start from</li>
+          <li>Free account-number changes, forever</li>
+          <li>Direct line to the developer</li>
+        </ul>
+        <a class="btn block" href="PASTE_STRIPE_LICENCE">Buy with card</a>
+        <p class="pay"><a href="PASTE_PAYPAL" rel="noopener">or pay with PayPal</a></p>
+      </div>
+
+    </div>
+
+    <p class="hint" style="margin-top:1.6rem">
+      Paying with PayPal? Stop by <a href="activate.html">the activation page</a> afterwards to send
+      me your MT5 account number. With Stripe it is collected during checkout.
+    </p>
+  </div>
+</section>
+
+<section id="licence">
+  <div class="wrap">
+    <h2>How the licence works</h2>
+    <ol class="steps">
+      <li><strong>Test it first, free, with nothing asked of you.</strong> In the Strategy Tester and on demo accounts the EA runs without a licence key — full functionality, no time limit, no crippled features. Run your own tests with your own broker's data and leave it on demo for a week.</li>
+      <li><strong>Buy, and send me your account number.</strong> The key is cryptographically signed against the MT5 account you intend to trade. Stripe asks for it at checkout; with PayPal you send it from the activation page.</li>
+      <li><strong>You get the files and your key.</strong> One email with the <span class="num">.ex5</span>, the <span class="num">.set</span> presets and a key in the form <span class="num">CGP1-XXXXXX-XXXXX-XXXXX</span>. Paste it into the "Licence key" input and you are trading. Usually same day.</li>
+      <li><strong>Changing accounts is free.</strong> New broker, new account, blown account, does not matter — email me and a new key comes back. That is part of the lifetime licence, not an upsell.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Questions</h2>
+
+    <details>
+      <summary>Do I need a licence key to backtest it?</summary>
+      <p>No. The Strategy Tester and demo accounts run without a key, with every feature enabled and no time limit. The key is only needed to trade a live account.</p>
+    </details>
+
+    <details>
+      <summary>Which symbols and brokers does it work with?</summary>
+      <p>The presets ship tuned for XAUUSD, which is where the testing work was done. Technically it will trade any MT5 symbol, but you would be tuning it yourself. Any MT5 broker works; on accounts with wide gold spreads the spread filter will simply stop entering, which is the intended behaviour.</p>
+    </details>
+
+    <details>
+      <summary>Is it prop-firm friendly?</summary>
+      <p>It has a configurable daily loss limit and a cap on simultaneous positions, and it does no arbitrage or latency trading, which is what most firms ban. That said, every firm writes its own rules — read yours and set the limits below their thresholds before you switch it on.</p>
+    </details>
+
+    <details>
+      <summary>Do I need a VPS?</summary>
+      <p>Yes, unless you leave a machine running Monday to Friday. The EA only trades while MT5 is open and connected. A basic VPS near your broker's server costs €10–15 a month.</p>
+    </details>
+
+    <details>
+      <summary>How much capital do I need?</summary>
+      <p>€1,000 on a standard account lets it work at 0.5% risk per trade. Below that the minimum lot size distorts position sizing and a cent account is the better option. Bear in mind the longest losing streak in the backtest was nine trades in a row — size for that, not for the good weeks.</p>
+    </details>
+
+    <details>
+      <summary>Is this a grid or a martingale?</summary>
+      <p>Neither. One position per signal, with a stop loss, and if it hits, the loss is taken. The name refers to the grid of timeframes and patterns, not a grid of orders.</p>
+    </details>
+
+    <details>
+      <summary>Can I get a refund?</summary>
+      <p>No, and that is precisely why you can test the whole thing before buying. As digital content delivered immediately, the right of withdrawal is waived on delivery of the key under Article 103(m) of the Spanish consumer protection act. If you would rather not commit, start with the monthly subscription.</p>
+    </details>
+
+    <details>
+      <summary>Can I share the file with a friend?</summary>
+      <p>It will not do them any good: the key is signed against your account number and validates nowhere else. Demo accounts need no key, so if you want to show someone, let them run it on demo.</p>
+    </details>
+
+    <details>
+      <summary>Do you guarantee profits?</summary>
+      <p>No, and be sceptical of anyone who does. This is a tool that executes a set of rules with discipline. The outcome depends on the market, your broker, your costs and the risk you configure. You can lose money with it.</p>
+    </details>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <h2>Talk to me before you buy</h2>
+    <p>
+      If you are unsure whether it fits your broker, your capital or the way you trade, email me and
+      you will get an answer from the person who wrote the code, not a support queue:
+      <a href="mailto:you@yourdomain.com">you@yourdomain.com</a>.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="risk"><strong>Risk warning.</strong> Trading foreign exchange, metals and leveraged CFDs carries a high level of risk and is not suitable for every investor. Leverage magnifies losses as well as gains and you can lose the entire capital you commit. CandleGrid Pro is a software tool: it is not financial advice, an investment recommendation or a portfolio management service, and it guarantees no result. Historical simulation results do not predict future results, and a simulation does not necessarily reflect the commission, swap, slippage or liquidity of a live account.</p>
+    <p class="legal">
+      © 2026 CandleGrid Pro · <a href="mailto:you@yourdomain.com">you@yourdomain.com</a><br>
+      Trading as: Full legal name · Tax ID 00000000X · Alicante, Spain<br>
+      <a href="terms.html">Licence terms</a> · <a href="terms.html#privacy">Privacy</a> · <a href="activate.html">Activate a licence</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Backtest equity curve, normalised to a base of 100.
+  // Replace these values when you publish a new test.
+  const curve = [100,98.5,97.3,98.9,101.2,104.8,108.1,111.4,115.9,121.3,
+                 126.7,131.8,134.2,137.9,140.1,138.4,135.2,136.8,134.9,133.1,
+                 135.6,133.8,132.4,134.7,133.2,131.5,133.9,132.1,130.4,128.6,
+                 131.2,133.5,132.0,134.8,137.2,135.4,133.9,136.7,139.8,143.2,
+                 147.6,152.1,155.8,158.2];
+
+  const W = 1000, H = 230, pad = 16;
+  const lo = Math.min(...curve), hi = Math.max(...curve);
+  const px = i => (i / (curve.length - 1)) * W;
+  const py = v => H - pad - ((v - lo) / (hi - lo)) * (H - pad * 2);
+
+  const d = "M" + curve.map((v, i) => `${px(i).toFixed(1)},${py(v).toFixed(1)}`).join(" L");
+  const line = document.getElementById("curveLine");
+  line.setAttribute("d", d);
+  document.getElementById("curveFill").setAttribute("d", `${d} L${W},${H} L0,${H} Z`);
+  line.style.setProperty("--len", Math.ceil(line.getTotalLength()));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activate your licence — CandleGrid Pro</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230D4F5C'/><rect x='9' y='7' width='4' height='18' fill='%23F5F6F2'/><rect x='19' y='11' width='4' height='14' fill='%23F5F6F2'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header>
+  <div class="bar">
+    <a class="mark" href="index.html">CandleGrid <span>Pro</span></a>
+    <a class="btn small ghost" href="index.html">Back to the product</a>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" style="padding-bottom:1.25rem">
+  <div class="wrap">
+    <p class="eyebrow">Order received</p>
+    <h1 style="max-width:21ch">Thank you. One detail left before I can cut your key</h1>
+    <p class="lede">
+      Your licence is signed against the MT5 account you will be trading, so I need that number.
+      Send it below and the files and key come back by email, usually the same day.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Finding your account number</h2>
+    <ol class="steps">
+      <li><strong>Open MetaTrader 5.</strong> In the Navigator panel, under Accounts, your account appears as a number followed by the broker's name. That number is what I need.</li>
+      <li><strong>Check it is the live one.</strong> A key cut for a demo account will not validate on your live account. Demo needs no key at all, so there is never a reason to send me a demo number.</li>
+      <li><strong>Send the form.</strong> Your mail client opens with the message already written. All you do is press send.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Send your details</h2>
+
+    <label for="account">MT5 account number (digits only)</label>
+    <input id="account" inputmode="numeric" autocomplete="off" placeholder="51234567">
+
+    <label for="broker">Broker</label>
+    <input id="broker" autocomplete="off" placeholder="Vantage, IC Markets, Pepperstone…">
+
+    <label for="payment">Email or reference used for payment</label>
+    <input id="payment" autocomplete="off" placeholder="The one on your PayPal or Stripe receipt">
+
+    <label for="notes">Anything you want to tell me (optional)</label>
+    <textarea id="notes" placeholder="Starting capital, the risk setting you have in mind, questions…"></textarea>
+
+    <p class="hint" id="warning" role="status"></p>
+
+    <p style="margin-top:1.5rem">
+      <button class="btn" id="send" type="button">Prepare the email</button>
+    </p>
+
+    <p class="hint">
+      Mail client not opening? Write to <a href="mailto:you@yourdomain.com">you@yourdomain.com</a>
+      with your account number, your broker and the email used for payment.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>While you wait</h2>
+    <p>
+      If you have not already, leave the EA running on a demo account with your own broker. It shows
+      you the real spread on your account and gets you used to the rhythm before money is involved —
+      the longest losing streak in the backtest was nine trades in a row, and it is better to meet
+      that on demo than on your first live week.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="risk"><strong>Risk warning.</strong> Trading foreign exchange, metals and leveraged CFDs carries a high level of risk and you can lose the entire capital you commit. CandleGrid Pro is software, not financial advice, and guarantees no result.</p>
+    <p class="legal">
+      © 2026 CandleGrid Pro · <a href="mailto:you@yourdomain.com">you@yourdomain.com</a><br>
+      <a href="terms.html">Licence terms</a> · <a href="terms.html#privacy">Privacy</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  $("send").addEventListener("click", () => {
+    const account = $("account").value.trim();
+    const warning = $("warning");
+
+    if(!/^\d{4,12}$/.test(account)){
+      warning.textContent = "An MT5 account number is 4 to 12 digits, nothing else. Please check it.";
+      warning.style.color = "var(--clay)";
+      $("account").focus();
+      return;
+    }
+
+    warning.textContent = "";
+    const body =
+      "MT5 account number: " + account + "\n" +
+      "Broker: " + $("broker").value.trim() + "\n" +
+      "Payment email or reference: " + $("payment").value.trim() + "\n\n" +
+      "Notes:\n" + $("notes").value.trim() + "\n";
+
+    window.location.href =
+      "mailto:you@yourdomain.com" +
+      "?subject=" + encodeURIComponent("CandleGrid Pro licence — account " + account) +
+      "&body=" + encodeURIComponent(body);
+  });
+</script>
+
+</body>
+</html>
