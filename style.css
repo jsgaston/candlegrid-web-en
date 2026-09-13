@@ -112,7 +112,10 @@ nav a:hover{color:var(--petrol)}
 .btn.small{padding:.5rem 1.05rem;font-size:.875rem}
 .btn.block{display:block;width:100%;text-align:center}
 .btn-row{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center}
-
+paypal.Buttons({
+    fundingSource: paypal.FUNDING.PAYPAL,
+    style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
+    ...
 /* ── labelled blocks ──────────────────────────────── */
 .feat > div{display:grid;grid-template-columns:16rem 1fr;gap:2.25rem;
             padding:1.6rem 0;border-top:1px solid var(--rule-soft)}
