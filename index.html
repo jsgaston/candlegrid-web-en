@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CandleGrid Pro — Candlestick Pattern Expert Advisor for MetaTrader 5</title>
-<meta name="description" content="An MT5 Expert Advisor that trades 14 candlestick patterns across seven timeframes in parallel. Hard stop loss on every entry, no grid, no martingale. Free to test in demo and in the Strategy Tester.">
+<meta name="description" content="An MT5 Expert Advisor that trades 14 candlestick patterns across seven timeframes in parallel. Hard stop loss on every entry, no grid, no martingale. Free backtest build for the Strategy Tester.">
 <link rel="canonical" href="https://www.wisfli.com/candlegrid">
 <meta name="theme-color" content="#06141F">
 <meta property="og:type" content="product">
 <meta property="og:title" content="CandleGrid Pro — Expert Advisor for MetaTrader 5">
-<meta property="og:description" content="Fourteen candlestick patterns, seven timeframes, one robot. Every entry carries a hard stop. Test it free in demo before you buy.">
+<meta property="og:description" content="Fourteen candlestick patterns, seven timeframes, one robot. Every entry carries a hard stop. Backtest it free before you buy.">
 <meta property="og:url" content="https://www.wisfli.com/candlegrid">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2306141F'/><rect x='9' y='7' width='4' height='18' fill='%2345C29A'/><rect x='19' y='11' width='4' height='14' fill='%23E0A92C'/></svg>">
@@ -278,22 +278,6 @@ footer .legal strong{color:var(--dmuted)}
   *{animation:none!important;transition:none!important}
   .draw{stroke-dashoffset:0}.fade{opacity:1}
 }
-/* live record from Armada (this bot only) */
-.live-card .lv-flag svg{width:27px;height:18px;display:inline-block;vertical-align:-3px;margin-right:10px}
-.lv-body{display:grid;grid-template-columns:.9fr 1.1fr;gap:0;align-items:stretch;border-bottom:1px solid var(--drule)}
-.lv-body .inst-big{padding:24px 22px 18px;border-right:1px solid var(--drule);display:block}
-.lv-body .inst-big .num{display:block;margin:0 0 10px}
-.lv-body .inst-big .lab{display:block;line-height:1.5}
-.lv-side{margin:18px 0 0;padding:0;list-style:none;font:500 13px/1.5 Archivo;color:var(--dmuted)}
-.lv-side li{padding:7px 0;border-top:1px solid var(--drule);display:flex;justify-content:space-between;gap:14px}
-.lv-side li b{color:var(--dtext);font-weight:600;text-align:right}
-.lv-chart{position:relative;padding:14px 12px 6px;min-height:230px}
-.lv-chart svg{display:block;width:100%;height:auto}
-.lv-cap{font:500 12px Archivo;color:var(--dmuted);margin:4px 10px 8px}
-.lv-empty{grid-column:1/-1;padding:44px 22px;text-align:center;font:500 14.5px/1.6 Archivo;color:var(--dmuted)}
-.lv-empty b{display:block;color:#fff;font-size:17px;margin-bottom:6px}
-.live-card .pos{color:var(--sig)} .live-card .neg{color:var(--sig-down)}
-@media (max-width:760px){.lv-body{grid-template-columns:1fr}.lv-body .inst-big{border-right:0;border-bottom:1px solid var(--drule)}}
 </style>
 </head>
 <body>
@@ -304,7 +288,6 @@ footer .legal strong{color:var(--dmuted)}
     <a class="brand" href="https://wisfli.com/"><svg viewBox="0 0 60 40" aria-hidden="true"><path d="M0 0h60v40H0z" fill="#14528C"/><path d="M8 8h44v24H8z" fill="#fff"/><path d="M18 14h24v12H18z" fill="#C8322A"/></svg>WISFLI <span class="prod">/ CandleGrid Pro</span></a>
     <nav aria-label="Page">
       <a href="#what">What it is</a>
-      <a href="#live">Live in Armada</a>
       <a href="#test">Test results</a>
       <a href="#spec" class="opt">Specification</a>
       <a href="#licence" class="opt">Licence</a>
@@ -353,7 +336,7 @@ footer .legal strong{color:var(--dmuted)}
   <div class="wrap">
     <div><h3>A hard stop on every entry</h3><p>Stop loss and take profit sit on the broker's server from the first tick, so a dead VPS never leaves a position unprotected.</p></div>
     <div><h3>The grid is timeframes, not orders</h3><p>No averaging down, no lot multiplication, no second position opened to rescue the first.</p></div>
-    <div><h3>Free to test, in full</h3><p>The Strategy Tester and demo accounts need no key, with every feature enabled and no time limit.</p></div>
+    <div><h3>Backtest it free, in full</h3><p>A separate build runs in the Strategy Tester with no key and no time limit, every rule and filter enabled.</p></div>
   </div>
 </div>
 
@@ -388,37 +371,6 @@ footer .legal strong{color:var(--dmuted)}
           <p>An on-chart panel shows the state of each timeframe, and a periodic journal report logs open positions, the day's result and the reason a signal was skipped. No black box that only ever says "waiting for signal".</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section id="live" class="panel">
-  <div class="wrap">
-    <div class="head">
-      <h2>Trading live in Armada</h2>
-      <p>CandleGrid Pro runs in the Armada copy-trading account under signal flag A. This panel shows only its own trades, taken straight from that account and refreshed every 15 minutes. It fills in by itself; nothing here is typed by hand.</p>
-    </div>
-
-    <div class="instrument live-card" id="lv-card" aria-live="polite">
-      <header>
-        <b><span class="lv-flag" id="lv-flag"></span>Armada, flag A<span class="badge" id="lv-badge" hidden>DEMO</span></b>
-        <span id="lv-updated">Loading the live record…</span>
-      </header>
-      <div class="lv-body" id="lv-body">
-        <div class="lv-empty"><b>Loading…</b></div>
-      </div>
-      <dl class="inst-grid" id="lv-grid">
-        <div><dt>Closed trades</dt><dd id="lv-trades">—</dd></div>
-        <div><dt>Hits</dt><dd id="lv-hits">—</dd></div>
-        <div><dt>Profit factor</dt><dd id="lv-pf">—</dd></div>
-        <div><dt>Max drawdown</dt><dd id="lv-dd">—</dd></div>
-      </dl>
-      <p class="inst-foot" id="lv-foot">Figures are measured against the whole Armada account and use the settings that account runs. Your own risk, broker and costs will give different results. Past performance does not indicate future results.</p>
-    </div>
-
-    <div class="actions" style="margin-top:28px">
-      <a class="btn ink" id="lv-link" href="https://jsgaston.github.io/armada/">See the full record in Armada</a>
-      <span class="aside" style="color:var(--muted)" id="lv-aside">Every statistic, month by month, with Monte Carlo.</span>
     </div>
   </div>
 </section>
@@ -478,15 +430,15 @@ footer .legal strong{color:var(--dmuted)}
     <div class="head solo"><h2>Specification</h2></div>
     <dl class="spec">
       <div><dt>Platform</dt><dd>MetaTrader 5, build 4000 or later</dd></div>
-      <div><dt>Delivered as</dt><dd>Compiled .ex5 + .set presets</dd></div>
+      <div><dt>Delivered as</dt><dd>Compiled .ex5 + .set presets, emailed on purchase</dd></div>
       <div><dt>Timeframes traded</dt><dd>M30, H1, H2, H4, H8, H12, D1</dd></div>
       <div><dt>Chart it attaches to</dt><dd>Any, it reads all seven internally</dd></div>
       <div><dt>Tuned for</dt><dd>XAUUSD</dd></div>
       <div><dt>Account types</dt><dd>Hedging and netting</dd></div>
       <div><dt>Suggested minimum deposit</dt><dd>€1,000 standard / €100 cent</dd></div>
       <div><dt>VPS</dt><dd>Recommended, not supplied</dd></div>
-      <div><dt>Licensing</dt><dd>Signed against your MT5 account number</dd></div>
-      <div><dt>Demo &amp; Strategy Tester</dt><dd>No licence key required</dd></div>
+      <div><dt>Licensing</dt><dd>One key, 3 live + 3 demo accounts, managed by you</dd></div>
+      <div><dt>Strategy Tester</dt><dd>Free build, no key required</dd></div>
     </dl>
   </div>
 </section>
@@ -495,49 +447,46 @@ footer .legal strong{color:var(--dmuted)}
   <div class="wrap">
     <div class="head">
       <h2>Pricing</h2>
-      <p>Launch pricing while the out-of-sample validation is still running. It rises as the track record grows, and early buyers keep what they paid.</p>
+      <p>One key covers three live accounts and three demo accounts, and you move them yourself whenever you change broker. Prices include VAT.</p>
     </div>
 
     <div class="plans">
       <div class="plan">
         <h3>Monthly subscription</h3>
         <p class="who">For taking it live without committing up front.</p>
-        <p class="price">€29 <em>/ month</em></p>
+        <p class="price">&euro;29 <em>/ month</em></p>
         <p class="was">VAT included, cancel any time</p>
         <ul>
-          <li>One live account, unlimited demo accounts</li>
+          <li>Three live accounts, three demo accounts</li>
           <li>Updates and .set presets included</li>
-          <li>Email support</li>
-          <li>Cancels in one click, no questions</li>
+          <li>Email support from the developer</li>
+          <li>Cancel in one click, no questions</li>
+          <li>The key stops working when the subscription ends</li>
         </ul>
         <div class="pay-slot">
-          <div id="paypal-button-container-P-9FX7453496128393BNKTDB7Q"></div>
+          <a class="btn brass" href="STRIPE_LINK_MONTHLY">Subscribe &mdash; &euro;29 / month</a>
         </div>
       </div>
 
       <div class="plan pick">
-        <span class="tag">First 10 licences</span>
         <h3>Lifetime licence</h3>
-        <p class="who">For traders who have tested it and want to keep it.</p>
-        <p class="price">€149</p>
-        <p class="was">VAT included, regular price €199</p>
+        <p class="who">For traders who have run the tests and want to keep it.</p>
+        <p class="price">&euro;249</p>
+        <p class="was">VAT included, one payment</p>
         <ul>
-          <li>Two live accounts, unlimited demo accounts</li>
+          <li>Three live accounts, three demo accounts</li>
           <li>Lifetime updates</li>
           <li>XAUUSD .set presets to start from</li>
-          <li>Free account-number changes, forever</li>
+          <li>Swap accounts yourself, forever, at no cost</li>
           <li>Direct line to the developer</li>
         </ul>
         <div class="pay-slot">
-          <stripe-buy-button
-            buy-button-id="buy_btn_1UF6qY9abIQixlis7Q6zeIdb"
-            publishable-key="pk_live_51TZyif9abIQixliscbpfVG3y2wD28GUvAfE7BnvbENBMOyUQMqE4Dh954G2zII0HNpZ6dTZxUJg4kpncQrUL266Z00nJ9nMGOT">
-          </stripe-buy-button>
+          <a class="btn brass" href="STRIPE_LINK_LIFETIME">Buy the lifetime licence &mdash; &euro;249</a>
         </div>
       </div>
     </div>
 
-    <p class="hint">Paying with PayPal? Stop by <a href="activate.html">the activation page</a> afterwards to send me your MT5 account number. With Stripe it is collected during checkout.</p>
+    <p class="hint">Checkout is handled by Stripe. Nothing is asked of you beyond an email address: the key and the robot arrive there automatically, and you register your account numbers afterwards on <a href="https://api.wisfli.com/manage">your licence page</a>.</p>
   </div>
 </section>
 
@@ -545,10 +494,10 @@ footer .legal strong{color:var(--dmuted)}
   <div class="wrap">
     <div class="head solo"><h2>How the licence works</h2></div>
     <ol class="steps">
-      <li><strong>Test it first, free, with nothing asked of you.</strong> In the Strategy Tester and on demo accounts the EA runs without a licence key: full functionality, no time limit, no crippled features. Run your own tests with your own broker's data and leave it on demo for a week. <a href="CandleGridPro.ex5">Download CandleGrid Pro</a>.</li>
-      <li><strong>Buy, and send me your account number.</strong> The key is cryptographically signed against the MT5 account you intend to trade. Stripe asks for it at checkout; with PayPal you send it from the activation page.</li>
-      <li><strong>You get the files and your key.</strong> One email with the <span class="mono">.ex5</span>, the <span class="mono">.set</span> presets and a key in the form <span class="mono">CGP1-XXXXXX-XXXXX-XXXXX</span>. Paste it into the "Licence key" input and you are trading. Usually same day.</li>
-      <li><strong>Changing accounts is free.</strong> New broker, new account, blown account, does not matter: write to <a href="mailto:licenses@wisfli.com">licenses@wisfli.com</a> and a new key comes back. That is part of the lifetime licence, not an upsell.</li>
+      <li><strong>Backtest it first, free, with nothing asked of you.</strong> The backtest build runs in the MT5 Strategy Tester without a key: every pattern, filter and timeframe enabled, no time limit, no crippled features. Run it on your own broker's data before you decide. <a href="CandleGridPro-Backtest.ex5">Download the free backtest build</a>. It does not trade live or demo accounts.</li>
+      <li><strong>Buy.</strong> Stripe handles the payment and asks only for an email address. No account number, no forms, no waiting for me to be awake.</li>
+      <li><strong>The robot and your key arrive by email, automatically.</strong> One message from <span class="mono">licenses@wisfli.com</span> with the <span class="mono">.ex5</span>, the <span class="mono">.set</span> presets and a key in the form <span class="mono">WSF-XXXX-XXXX-XXXX</span>. Paste the key into the "Licence key" input and allow <span class="mono">https://api.wisfli.com</span> in Tools &rarr; Options &rarr; Expert Advisors, so the EA can check the licence.</li>
+      <li><strong>You manage your own accounts.</strong> Each key covers three live accounts and three demo accounts, and you add, remove or swap them yourself at <a href="https://api.wisfli.com/manage">api.wisfli.com/manage</a>. New broker or blown account, no email to me and no charge.</li>
     </ol>
   </div>
 </section>
@@ -559,7 +508,7 @@ footer .legal strong{color:var(--dmuted)}
     <div class="faq-list">
       <details>
         <summary>Do I need a licence key to backtest it?</summary>
-        <p>No. The Strategy Tester and demo accounts run without a key, with every feature enabled and no time limit. The key is only needed to trade a live account.</p>
+        <p>No. The free backtest build runs in the Strategy Tester with every feature enabled and no time limit, but it will not trade a live or a demo account. Trading, on any account type, needs a key.</p>
       </details>
       <details>
         <summary>Which symbols and brokers does it work with?</summary>
@@ -583,11 +532,15 @@ footer .legal strong{color:var(--dmuted)}
       </details>
       <details>
         <summary>Can I get a refund?</summary>
-        <p>No, and that is precisely why you can test the whole thing before buying. As digital content delivered immediately, the right of withdrawal is waived on delivery of the key under Article 103(m) of the Spanish consumer protection act. If you would rather not commit, start with the monthly subscription.</p>
+        <p>No, and that is precisely why the whole strategy is yours to backtest before buying. As digital content delivered immediately, the right of withdrawal is waived on delivery of the key under Article 103(m) of the Spanish consumer protection act. If you would rather not commit, start with the monthly subscription.</p>
       </details>
       <details>
         <summary>Can I share the file with a friend?</summary>
-        <p>It will not do them any good: the key is signed against your account number and validates nowhere else. Demo accounts need no key, so if you want to show someone, let them run it on demo.</p>
+        <p>It will not do them any good. The robot checks the key against the licence server on start-up, and a key only runs on the accounts registered to it: three live and three demo, yours to set. If you want to show someone what it does, send them the free backtest build.</p>
+      </details>
+      <details>
+        <summary>Does it need an internet connection?</summary>
+        <p>The same one MT5 already needs. On start-up, and periodically after that, the robot checks your key against <span class="mono">api.wisfli.com</span>, so that address has to be allowed in Tools &rarr; Options &rarr; Expert Advisors &rarr; Allow WebRequest. On a VPS this is a one-off setting.</p>
       </details>
       <details>
         <summary>Do you guarantee profits?</summary>
@@ -619,7 +572,7 @@ footer .legal strong{color:var(--dmuted)}
       <div>
         <h4>CandleGrid Pro</h4>
         <ul>
-          <li><a href="activate.html">Activate a licence</a></li>
+          <li><a href="https://api.wisfli.com/manage">Manage your licence</a></li>
           <li><a href="terms.html">Licence terms</a></li>
           <li><a href="terms.html#privacy">Privacy</a></li>
           <li><a href="ReportTester-27085970.html">Strategy Tester report</a></li>
@@ -631,8 +584,7 @@ footer .legal strong{color:var(--dmuted)}
           <li><a href="https://wisfli.com/">wisfli.com</a></li>
           <li><a href="https://jsgaston.github.io/regimeswitch-web-en/">RegimeSwitch Pro</a></li>
           <li><a href="https://jsgaston.github.io/armada/">Armada signal</a></li>
-          <li><a href="mailto:support@wisfli.com">Support</a></li>
-          <li><a href="mailto:licenses@wisfli.com">Licences</a></li>
+          <li><a href="mailto:support@wisfli.com">Email</a></li>
         </ul>
       </div>
     </div>
@@ -691,169 +643,5 @@ footer .legal strong{color:var(--dmuted)}
   })();
 </script>
 
-<!-- Payment buttons.
-     disable-funding=card,credit stops PayPal injecting its floating menu
-     (position:fixed, maximum z-index) over the sticky header. -->
-<script src="https://js.stripe.com/v3/buy-button.js" async></script>
-<script src="https://www.paypal.com/sdk/js?client-id=AWa_6Af93UGQdocFcdOmDgC6xGjFV4Kp-8yeFyZ6DhHqPDnHt6kK5xQdSenwitI1-a0kk4Sc4DeCYK9N&vault=true&intent=subscription&currency=EUR&disable-funding=card,credit" data-sdk-integration-source="button-factory"></script>
-<script>
-  if (window.paypal) {
-    paypal.Buttons({
-      fundingSource: paypal.FUNDING.PAYPAL,
-      style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
-      createSubscription: function (data, actions) {
-        return actions.subscription.create({ plan_id: 'P-9FX7453496128393BNKTDB7Q' });
-      },
-      onApprove: function (data) {
-        window.location.href = 'activate.html?sub=' + encodeURIComponent(data.subscriptionID);
-      },
-      onError: function (err) {
-        console.error('PayPal:', err);
-      }
-    }).render('#paypal-button-container-P-9FX7453496128393BNKTDB7Q');
-  }
-</script>
-
-<script>
-/* Live record of this bot inside Armada. Reads the public stats.json that the
-   Armada publisher uploads every 15 minutes, finds the scope under this bot's
-   flag and draws it. Nothing is stored or typed by hand. */
-(function(){
-  var FLAG='A', NAME='CandleGrid Pro', BASE='https://jsgaston.github.io/armada/';
-  var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var FLAGS={A:'<path d="M0 0h30v40H0z" fill="#fff"/><path d="M30 0h30L46 20l14 20H30z" fill="#14528C"/>',
-             B:'<path d="M0 0h60L46 20l14 20H0z" fill="#C8322A"/>',
-             C:'<path d="M0 0h60v8H0z" fill="#14528C"/><path d="M0 8h60v8H0z" fill="#fff"/><path d="M0 16h60v8H0z" fill="#C8322A"/><path d="M0 24h60v8H0z" fill="#fff"/><path d="M0 32h60v8H0z" fill="#14528C"/>'};
-  function $(id){return document.getElementById(id);}
-  function nil(v){return v===null||v===undefined||(typeof v==='number'&&isNaN(v));}
-  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function pct(n,d){d=d==null?2:d;return nil(n)?'—':(n>0?'+':(n<0?'−':''))+Math.abs(n).toFixed(d)+'%';}
-  function upct(n,d){return nil(n)?'—':Math.abs(n).toFixed(d==null?1:d)+'%';}
-  function num(n){return nil(n)?'—':(n<0?'−':'')+Math.abs(n).toFixed(2);}
-  function ddp(n){return nil(n)?'—':(n>0?'−'+n.toFixed(2)+'%':'0.00%');}
-  function cls(n){return nil(n)?'':(n>0?'pos':(n<0?'neg':''));}
-  function fdate(iso){var d=new Date(iso+'T00:00:00Z');return d.getUTCDate()+' '+MONTHS[d.getUTCMonth()]+' '+d.getUTCFullYear();}
-  function ftime(ms){var d=new Date(ms);return d.getUTCDate()+' '+MONTHS[d.getUTCMonth()]+' '+String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0');}
-  var CUR='EUR';
-  function money(n,sign){ if(nil(n)) return '—';
-    var v=new Intl.NumberFormat('en-IE',{style:'currency',currency:CUR,maximumFractionDigits:2}).format(Math.abs(n));
-    return (n<0?'−':(sign&&n>0?'+':''))+v; }
-
-  /* monotone cubic: smooth, never overshoots. Two points get a soft S with flat ends. */
-  function smooth(P){
-    var n=P.length,i; if(!n) return '';
-    if(n===1) return 'M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1);
-    if(n===2){ var h=(P[1][0]-P[0][0])/2; return 'M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1)+'C'+(P[0][0]+h).toFixed(1)+' '+P[0][1].toFixed(1)+' '+(P[1][0]-h).toFixed(1)+' '+P[1][1].toFixed(1)+' '+P[1][0].toFixed(1)+' '+P[1][1].toFixed(1); }
-    var dx=[],m=[],t=[];
-    for(i=0;i<n-1;i++){ dx[i]=(P[i+1][0]-P[i][0])||1e-6; m[i]=(P[i+1][1]-P[i][1])/dx[i]; }
-    t[0]=m[0]; t[n-1]=m[n-2];
-    for(i=1;i<n-1;i++) t[i]= m[i-1]*m[i]<=0 ? 0 : 3*(dx[i-1]+dx[i])/((2*dx[i]+dx[i-1])/m[i-1]+(dx[i]+2*dx[i-1])/m[i]);
-    var d='M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1);
-    for(i=0;i<n-1;i++){ var k=dx[i]/3;
-      d+='C'+(P[i][0]+k).toFixed(1)+' '+(P[i][1]+t[i]*k).toFixed(1)+' '+(P[i+1][0]-k).toFixed(1)+' '+(P[i+1][1]-t[i+1]*k).toFixed(1)+' '+P[i+1][0].toFixed(1)+' '+P[i+1][1].toFixed(1); }
-    return d;
-  }
-
-  function findScope(s){
-    var sc=s.scopes||[], i;
-    for(i=0;i<sc.length;i++) if(sc[i].flag===FLAG && sc[i].kind==='group') return sc[i];
-    for(i=0;i<sc.length;i++) if(sc[i].flag===FLAG) return sc[i];
-    var st=strategy(s), mg=(st&&st.magics)||[];
-    if(mg.length===1) for(i=0;i<sc.length;i++) if(sc[i].kind==='magic'&&sc[i].magics&&sc[i].magics[0]===mg[0]) return sc[i];
-    return null;
-  }
-  function strategy(s){ var l=s.strategies||[]; for(var i=0;i<l.length;i++) if(l[i].flag===FLAG) return l[i]; return null; }
-
-  /* closed trades once there are a few; hourly equity (open positions included) before that */
-  function series(sc){
-    var tl=sc.tl, n=(tl&&tl.t)?tl.t.length:0, live=sc.live||[];
-    if(n>=6 || (n>=1 && live.length<3)){
-      var pts=[{x:0,v:100}], v=100;
-      for(var i=0;i<n;i++){ v*=1+tl.r[i]/100; pts.push({x:i+1,v:v,r:tl.r[i],t:tl.t[i]*1000}); }
-      pts.kind='trade'; return pts;
-    }
-    if(live.length>=2){ var out=live.map(function(p){return {x:p[0]*1000,v:p[1],t:p[0]*1000};}); out.kind='live'; return out; }
-    var eq=(sc.equity||[]).filter(function(e){return e&&e.d&&!nil(e.v);});
-    if(eq.length>=2){ var ed=eq.map(function(e){var ms=Date.parse(e.d+'T00:00:00Z');return {x:ms,v:+e.v,t:ms};}); ed.kind='day'; return ed; }
-    return [];
-  }
-
-  function chart(sc){
-    var pts=series(sc); if(pts.length<2) return '';
-    var box=$('lv-chartbox'), W=Math.max(300,(box&&box.clientWidth)||560)-24, H=220, PL=6, PR=58, PT=16, PB=26;
-    var vs=pts.map(function(p){return p.v;});
-    var lo=Math.min.apply(null,vs.concat([100])), hi=Math.max.apply(null,vs.concat([100])), pad=(hi-lo)*.18||.2; lo-=pad; hi+=pad;
-    var x0=pts[0].x, x1=pts[pts.length-1].x;
-    var X=function(x){return PL+(x-x0)/((x1-x0)||1)*(W-PL-PR);}, Y=function(v){return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB);};
-    var P=pts.map(function(p){return [X(p.x),Y(p.v)];});
-    var line=smooth(P), area=line+'L'+P[P.length-1][0].toFixed(1)+' '+(H-PB)+'L'+P[0][0].toFixed(1)+' '+(H-PB)+'Z';
-    var up=vs[vs.length-1]>=100, col=up?'#45C29A':'#E8715F';
-    var g='', steps=3;
-    for(var k=0;k<=steps;k++){ var tv=lo+(hi-lo)*k/steps, ty=Y(tv);
-      g+='<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+ty.toFixed(1)+'" y2="'+ty.toFixed(1)+'" stroke="rgba(214,230,240,.07)"/>'+
-         '<text x="'+(W-PR+8)+'" y="'+(ty+4).toFixed(1)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+pct(tv-100,2)+'</text>'; }
-    g+='<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+Y(100).toFixed(1)+'" y2="'+Y(100).toFixed(1)+'" stroke="rgba(214,230,240,.3)" stroke-dasharray="3 4"/>';
-    var dots='';
-    if(pts.kind==='trade' && pts.length<=60) pts.forEach(function(p,i){ if(p.r==null) return;
-      dots+='<circle cx="'+P[i][0].toFixed(1)+'" cy="'+P[i][1].toFixed(1)+'" r="3.2" fill="'+(p.r>=0?'#45C29A':'#E8715F')+'" stroke="#0A2130" stroke-width="1.5"><title>Trade #'+i+': '+pct(p.r,3)+'</title></circle>'; });
-    var fmtT=function(ms){ return pts.kind==='day'?fdate(new Date(ms).toISOString().slice(0,10)):ftime(ms)+' UTC'; };
-    var first=pts.kind==='trade'?'start':fmtT(pts[0].t), last=pts.kind==='trade'?'trade #'+(pts.length-1):fmtT(pts[pts.length-1].t);
-    g+='<text x="'+PL+'" y="'+(H-7)+'" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+first+'</text>'+
-       '<text x="'+(W-PR)+'" y="'+(H-7)+'" text-anchor="end" font-family="Archivo" font-size="11.5" fill="#8DA4B4">'+last+'</text>';
-    return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(NAME)+' growth curve inside Armada">'+
-      '<defs><linearGradient id="lvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".26"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+
-      g+'<path d="'+area+'" fill="url(#lvg)"/><path d="'+line+'" fill="none" stroke="'+col+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>'+dots+'</svg>'+
-      '<p class="lv-cap">'+(pts.kind==='trade'?'Growth after each closed trade, % of the Armada account.':pts.kind==='day'?'Growth at each day\u2019s close, % of the Armada account.':'Hourly equity for this bot, open positions included, % of the Armada account.')+'</p>';
-  }
-
-  var STATE=null;
-  function render(){
-    var s=STATE, body=$('lv-body');
-    if(!s){ body.innerHTML='<div class="lv-empty"><b>The live record could not be loaded right now.</b>It is always available on the Armada page.</div>'; $('lv-updated').textContent='Unavailable'; return; }
-    var A=s.account||{}; if(A.currency) CUR=A.currency;
-    if(A.type==='demo'){ $('lv-badge').hidden=false;
-      $('lv-foot').textContent='The Armada account is currently a demo account, and demo fills are usually kinder than real-money execution. Figures are measured against the whole Armada account and use the settings that account runs; your own risk, broker and costs will give different results. Past performance does not indicate future results.'; }
-    if(s.updated_utc){ var mins=Math.round((Date.now()-new Date(s.updated_utc))/60000);
-      $('lv-updated').textContent='Updated '+(mins<2?'just now':mins<60?mins+' min ago':mins<2880?Math.round(mins/60)+' h ago':Math.round(mins/1440)+' days ago'); }
-    var st=strategy(s), sc=findScope(s);
-    if(!sc || sc.empty){
-      var why = st && st.status==='live' ? NAME+' is sailing in Armada but its figures are not published yet.' :
-        NAME+' has joined the Armada account and has not closed a trade there yet.';
-      body.innerHTML='<div class="lv-empty"><b>No closed trades yet.</b>'+esc(why)+' Its record appears here automatically after the first one.</div>';
-      return;
-    }
-    var R=sc.returns||{}, K=sc.risk||{}, T=sc.trades||{};
-    if(sc.tl&&sc.tl.p&&sc.tl.p.length){ sc.net=Math.round(sc.tl.p.reduce(function(a,b){return a+(+b||0);},0)*100)/100; }  /* net = its own closed trades */
-    var money_on=A.publish_money && !nil(sc.net);
-    var big = money_on ? money(sc.net,true) : pct(R.total_pct);
-    var since = T.first_trade ? fdate(T.first_trade) : (st&&st.since?fdate(st.since):'');
-    var side=[];
-    side.push(['Contribution to the account','<span class="'+cls(R.total_pct)+'">'+pct(R.total_pct)+'</span>']);
-    if(!nil(R.month_pct)) side.push(['This month','<span class="'+cls(R.month_pct)+'">'+pct(R.month_pct)+'</span>']);
-    if(!nil(T.expectancy_pct)) side.push(['Average trade','<span class="'+cls(T.expectancy_pct)+'">'+pct(T.expectancy_pct,3)+'</span>']);
-    if(sc.magics && sc.magics.length) side.push([sc.magics.length===1?'Magic number':'Magic numbers', esc(sc.magics.join(', '))]);
-    if(sc.symbols && sc.symbols.length) side.push(['Instruments traded', esc(sc.symbols.map(function(x){return x.s;}).join(', '))]);
-    if(T.last_trade) side.push(['Last closed trade', fdate(T.last_trade)]);
-    body.innerHTML='<div class="inst-big"><span class="num '+cls(money_on?sc.net:R.total_pct)+'">'+big+'</span>'+
-      '<span class="lab">'+(money_on?'net result':'return')+' of '+esc(NAME)+' inside Armada'+(since?', since '+since:'')+'</span>'+
-      '<ul class="lv-side">'+side.map(function(r){return '<li><span>'+r[0]+'</span><b>'+r[1]+'</b></li>';}).join('')+'</ul></div>'+
-      '<div class="lv-chart" id="lv-chartbox"></div>';
-    $('lv-chartbox').innerHTML=chart(sc)||'<div class="lv-empty">Not enough points to draw a curve yet.</div>';
-    $('lv-trades').textContent=nil(T.trades)?'—':T.trades;
-    $('lv-hits').textContent=upct(T.win_rate_pct,1);
-    $('lv-pf').textContent=num(T.profit_factor);
-    $('lv-dd').textContent=ddp(K.max_drawdown_pct);
-    $('lv-link').href=BASE+'#bot='+encodeURIComponent(sc.id);
-    $('lv-link').textContent='See '+NAME+'\u2019s full record in Armada';
-  }
-
-  $('lv-flag').innerHTML=FLAGS[FLAG]?'<svg viewBox="0 0 60 40" aria-hidden="true">'+FLAGS[FLAG]+'</svg>':'';
-  fetch(BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
-    .then(function(r){return r.ok?r.json():null;})
-    .then(function(s){ STATE=s; render(); })
-    .catch(function(){ STATE=null; render(); });
-  var tm; window.addEventListener('resize',function(){ clearTimeout(tm); tm=setTimeout(function(){ if(STATE){ var sc=findScope(STATE), b=$('lv-chartbox'); if(sc&&b) b.innerHTML=chart(sc); } },150); });
-})();
-</script>
 </body>
 </html>
