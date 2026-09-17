@@ -97,6 +97,17 @@ code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:.9
 .inst-grid dt{font:500 12px Archivo;color:var(--dmuted);margin:0 0 3px}
 .inst-grid dd{font:700 20px Archivo;color:#fff;margin:0;white-space:nowrap}
 .inst-foot{padding:12px 20px;border-top:1px solid var(--drule);font:400 12.5px/1.5 Archivo;color:var(--dmuted);margin:0}
+/* live panel (Armada) */
+[hidden]{display:none!important}
+.instrument header .tags{display:flex;align-items:center;gap:10px}
+.badge-demo{padding:3px 8px;border:1px solid var(--brass);color:var(--brass);font:700 11px Archivo;letter-spacing:.09em}
+.live-dot{display:inline-flex;align-items:center;gap:7px}
+.live-dot::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--sig);flex:none}
+.live-dot.off::before{background:var(--dmuted)}
+#live .actions{margin-top:24px}
+#live .empty{display:flex;flex-direction:column;justify-content:center;height:100%;padding:0 20px;gap:4px}
+#live .empty b{font:700 15px Archivo;color:#fff}
+#live .empty span{font:400 13.5px Archivo;color:var(--dmuted)}
 .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1.8s .25s cubic-bezier(.6,.05,.25,1) forwards}
 .fade{opacity:0;animation:fadein .8s 1.5s forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
@@ -289,6 +300,7 @@ footer .legal strong{color:var(--dmuted)}
     <nav aria-label="Page">
       <a href="#what">What it is</a>
       <a href="#test">Test results</a>
+      <a href="#live" class="opt">Live</a>
       <a href="#spec" class="opt">Specification</a>
       <a href="#licence" class="opt">Licence</a>
       <a href="#faq" class="opt">FAQ</a>
@@ -422,6 +434,33 @@ footer .legal strong{color:var(--dmuted)}
       <a class="btn brass" href="ReportTester-27085970.html">Download the full Strategy Tester report</a>
       <span class="aside">The original MetaTrader file, with every input and every trade, uncut.</span>
     </div>
+  </div>
+</section>
+
+<section id="live" class="dark" hidden>
+  <div class="wrap">
+    <div class="head">
+      <h2>Live on Armada</h2>
+      <p>The same robot runs in the Armada account under the flag Alfa. The figures below are published automatically from that account every 15 minutes: nothing is picked by hand, and a bad month shows up here the same as a good one.</p>
+    </div>
+
+    <aside class="instrument" aria-label="Live results from the Armada account">
+      <header>
+        <b id="lv-name">CandleGrid Pro &mdash; Alfa</b>
+        <span class="tags"><span class="badge-demo" id="lv-demo" hidden>DEMO</span><span class="live-dot" id="lv-updated"></span></span>
+      </header>
+      <div class="inst-big"><span class="num" id="lv-ret">&mdash;</span><span class="lab" id="lv-ret-lab">return since the first trade</span></div>
+      <div class="inst-chart" id="lv-chart"></div>
+      <dl class="inst-grid">
+        <div><dt>Profit factor</dt><dd id="lv-pf">&mdash;</dd></div>
+        <div><dt>Winners</dt><dd id="lv-wr">&mdash;</dd></div>
+        <div><dt>Max drawdown</dt><dd id="lv-dd">&mdash;</dd></div>
+        <div><dt>Trades</dt><dd id="lv-tr">&mdash;</dd></div>
+      </dl>
+      <p class="inst-foot" id="lv-disc">Published automatically from the trading account. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.</p>
+    </aside>
+
+    <div class="actions"><a class="btn line" href="https://jsgaston.github.io/armada/">See the whole Armada record</a></div>
   </div>
 </section>
 
@@ -641,6 +680,134 @@ footer .legal strong{color:var(--dmuted)}
     }
     document.getElementById('art-candle').insertAdjacentHTML('afterbegin', g + '</svg>');
   })();
+</script>
+
+<!-- Live panel: reads the same stats.json the Armada page publishes. -->
+<script>
+(function(){
+  var BASE    = 'https://jsgaston.github.io/armada/';
+  var FLAG    = 'A';                                   // CandleGrid Pro sails as Alfa
+  var NAMERE  = /candlegrid|alfa/i;
+  var MAGICS  = [880030,880060,880120,880240,880480,880720,881440];
+  var MONTHS  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function $(id){ return document.getElementById(id); }
+  function nil(v){ return v===null||v===undefined||(typeof v==='number'&&isNaN(v)); }
+  function pct(n,d){ d=d==null?2:d; return nil(n)?'—':(n>0?'+':(n<0?'−':''))+Math.abs(n).toFixed(d)+'%'; }
+  function upct(n,d){ d=d==null?1:d; return nil(n)?'—':Math.abs(n).toFixed(d)+'%'; }
+  function ddp(n){ return nil(n)?'—':(n>0?'−'+n.toFixed(2)+'%':'0.00%'); }
+  function num(n,d){ d=d==null?2:d; return nil(n)?'—':(n<0?'−':'')+Math.abs(n).toFixed(d); }
+  function fdate(iso){ var d=new Date(iso+'T00:00:00Z');
+    return isNaN(d)?'':d.getUTCDate()+' '+MONTHS[d.getUTCMonth()]+' '+d.getUTCFullYear(); }
+
+  /* monotone cubic: smooth, but it never invents a peak the data does not have */
+  function smoothPath(P){
+    var n=P.length; if(!n) return '';
+    if(n<3) return P.map(function(p,i){ return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1); }).join('');
+    var dx=[],dy=[],m=[],t=[],i;
+    for(i=0;i<n-1;i++){ dx[i]=(P[i+1][0]-P[i][0])||1e-6; dy[i]=P[i+1][1]-P[i][1]; m[i]=dy[i]/dx[i]; }
+    t[0]=m[0]; t[n-1]=m[n-2];
+    for(i=1;i<n-1;i++) t[i]= m[i-1]*m[i]<=0 ? 0 : 3*(dx[i-1]+dx[i])/((2*dx[i]+dx[i-1])/m[i-1]+(dx[i]+2*dx[i-1])/m[i]);
+    var d='M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1);
+    for(i=0;i<n-1;i++){ var h=dx[i]/3;
+      d+='C'+(P[i][0]+h).toFixed(1)+' '+(P[i][1]+t[i]*h).toFixed(1)+' '+
+            (P[i+1][0]-h).toFixed(1)+' '+(P[i+1][1]-t[i+1]*h).toFixed(1)+' '+
+            P[i+1][0].toFixed(1)+' '+P[i+1][1].toFixed(1); }
+    return d;
+  }
+
+  /* trade by trade while the record is young, daily once it has history */
+  function series(sc){
+    var eq=sc.equity||[], tl=sc.tl;
+    if(tl && tl.t && tl.t.length>=2 && eq.length<60){
+      var out=[{v:100}], v=100;
+      for(var i=0;i<tl.t.length;i++){ v*=1+tl.r[i]/100; out.push({v:v}); }
+      return out;
+    }
+    if(eq.length===1) return [{v:100},{v:eq[0].v}];
+    return eq.slice();
+  }
+
+  function draw(sc){
+    var box=$('lv-chart'), pts=series(sc);
+    if(pts.length<2){
+      box.innerHTML='<div class="empty"><b>No closed trades yet.</b><span>The curve appears here the day this bot closes its first trade.</span></div>';
+      return;
+    }
+    var W=Math.max(300, box.clientWidth||900), H=180, PT=14, PB=8;
+    var vs=pts.map(function(p){ return p.v; });
+    var lo=Math.min.apply(null,vs.concat([100])), hi=Math.max.apply(null,vs.concat([100]));
+    var pad=(hi-lo)*.12||1; lo-=pad; hi+=pad;
+    var n=pts.length-1||1;
+    var X=function(i){ return i/n*W; };
+    var Y=function(v){ return PT+(1-(v-lo)/(hi-lo))*(H-PT-PB); };
+    var d=smoothPath(pts.map(function(p,i){ return [X(i),Y(p.v)]; }));
+    var len=0, i;
+    for(i=1;i<pts.length;i++){ var ax=X(i)-X(i-1), ay=Y(pts[i].v)-Y(pts[i-1].v); len+=Math.sqrt(ax*ax+ay*ay); }
+    var up=vs[vs.length-1]>=100, col=up?'#45C29A':'#E8715F';
+    box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" aria-hidden="true">'+
+      '<defs><linearGradient id="lvg" x1="0" y1="0" x2="0" y2="1">'+
+      '<stop offset="0" stop-color="'+col+'" stop-opacity=".28"/>'+
+      '<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+
+      '<line x1="0" x2="'+W+'" y1="'+Y(100).toFixed(1)+'" y2="'+Y(100).toFixed(1)+
+      '" stroke="rgba(214,230,240,.25)" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>'+
+      '<path class="fade" d="'+d+'L'+W+' '+(H-PB)+'L0 '+(H-PB)+'Z" fill="url(#lvg)"/>'+
+      '<path class="draw" style="--len:'+(Math.ceil(len*1.15)+20)+'" d="'+d+'" fill="none" stroke="'+col+
+      '" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>';
+  }
+
+  /* The bot's own group scope, or nothing. A single magic is one of the seven
+     timeframes, so showing it as "CandleGrid Pro" would understate the robot:
+     the seven magics have to be listed under Alfa in the publisher's config. */
+  function pick(scopes){
+    var i, sc, byFlag=null, byName=null, byMagics=null;
+    for(i=0;i<scopes.length;i++){
+      sc=scopes[i];
+      if(sc.kind!=='group' || sc.empty) continue;
+      if(sc.flag===FLAG) byFlag=byFlag||sc;
+      if(NAMERE.test(sc.name||'')) byName=byName||sc;
+      if(!byMagics && sc.magics && sc.magics.length>1 &&
+         sc.magics.filter(function(m){ return MAGICS.indexOf(+m)>=0; }).length>=2) byMagics=sc;
+    }
+    return byFlag||byName||byMagics||null;
+  }
+
+  var CUR=null;
+  function render(sc, s){
+    var R=sc.returns||{}, K=sc.risk||{}, T=sc.trades||{};
+    $('lv-name').textContent='CandleGrid Pro — '+(sc.name||'Alfa');
+    $('lv-ret').textContent=pct(R.total_pct);
+    $('lv-ret-lab').textContent=T.first_trade ? 'return since '+fdate(T.first_trade) : 'return since the first trade';
+    $('lv-pf').textContent=num(T.profit_factor);
+    $('lv-wr').textContent=upct(T.win_rate_pct);
+    $('lv-dd').textContent=ddp(K.max_drawdown_pct);
+    $('lv-tr').textContent=nil(T.trades)?'—':T.trades;
+    if((s.account||{}).type==='demo'){
+      $('lv-demo').hidden=false;
+      $('lv-disc').textContent='Figures come from a demo account and are published automatically every 15 minutes. Demo fills are usually kinder than real-money execution. Leveraged trading carries substantial risk and can cost you more than your deposit. Past performance does not indicate future results. Nothing here is investment advice.';
+    }
+    if(s.updated_utc){
+      var m=Math.round((Date.now()-new Date(s.updated_utc))/60000), el=$('lv-updated');
+      if(!isNaN(m)){
+        el.className='live-dot'+(m>90?' off':'');
+        el.textContent='Updated '+(m<2?'just now':m<60?m+' min ago':Math.round(m/60)+' h ago');
+      }
+    }
+    draw(sc);
+    $('live').hidden=false;
+  }
+
+  fetch(BASE+'stats.json?t='+Date.now(),{cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(s){
+      if(!s) return;
+      var sc=pick(s.scopes||[]);
+      if(!sc) return;                 // nothing published for this bot yet: section stays hidden
+      CUR=sc; render(sc,s);
+      var t; window.addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(function(){ if(CUR) draw(CUR); },150); });
+    })
+    .catch(function(){});
+})();
 </script>
 
 </body>
